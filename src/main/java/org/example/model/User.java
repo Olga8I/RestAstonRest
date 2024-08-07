@@ -1,30 +1,43 @@
 package org.example.model;
 
-import org.example.repository.PhoneNumberRepository;
-import org.example.repository.UserToDepartmentRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-
+import jakarta.persistence.*;
 import java.util.List;
+import java.util.Set;
 
+/**
+ * User entity
+ * One To Many: User -> PhoneNumber
+ * Many To Many: User <-> Department
+ * Many To One: User -> Role
+ */
+
+@Entity
 public class User {
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String firstName;
+
     private String lastName;
+
+    @ManyToOne
+    @JoinColumn(name = "role_id")
     private Role role;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<PhoneNumber> phoneNumberList;
-    private List<Department> departmentList;
 
-    @Autowired
-    private PhoneNumberRepository phoneNumberRepository;
-
-    @Autowired
-    private UserToDepartmentRepository userToDepartmentRepository;
+    @ManyToMany
+    @JoinTable(name = "user_department",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "department_id"))
+    private Set<Department> departmentList;
 
     public User() {
     }
 
-    public User(Long id, String firstName, String lastName, Role role, List<PhoneNumber> phoneNumberList, List<Department> departmentList) {
+    public User(Long id, String firstName, String lastName, Role role, List<PhoneNumber> phoneNumberList, Set<Department> departmentList) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -62,9 +75,6 @@ public class User {
     }
 
     public List<PhoneNumber> getPhoneNumberList() {
-        if (phoneNumberList == null) {
-            this.phoneNumberList = phoneNumberRepository.findAllByUserId(this.id);
-        }
         return phoneNumberList;
     }
 
@@ -72,14 +82,36 @@ public class User {
         this.phoneNumberList = phoneNumberList;
     }
 
-    public List<Department> getDepartmentList() {
-        if (departmentList == null) {
-            departmentList = userToDepartmentRepository.findDepartmentsByUserId(this.id);
-        }
+    public Set<Department> getDepartmentList() {
         return departmentList;
     }
 
-    public void setDepartmentList(List<Department> departmentList) {
+    public void setDepartmentList(Set<Department> departmentList) {
         this.departmentList = departmentList;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", role=" + role +
+                ", phoneNumberList=" + phoneNumberList +
+                ", departmentList=" + departmentList +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User)) return false;
+        User user = (User) o;
+        return id.equals(user.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
     }
 }

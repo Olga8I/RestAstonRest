@@ -1,38 +1,32 @@
 package org.example.model;
 
-import org.example.repository.UserToDepartmentRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import jakarta.persistence.*;
 
-import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 
 /**
  * The Department where User works
  * Relation:
  * Many To Many: Department <-> User
  */
-@Component
-public class Department {
 
+@Entity
+public class Department {
+@Id
+@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    private List<User> userList;
-
-    private final UserToDepartmentRepository userToDepartmentRepository;
-
-    @Autowired
-    public Department(UserToDepartmentRepository userToDepartmentRepository) {
-        this.userToDepartmentRepository = userToDepartmentRepository;
-    }
-
-    public Department(Long id, String name, UserToDepartmentRepository userToDepartmentRepository) {
-        this.id = id;
-        this.name = name;
-        this.userToDepartmentRepository = userToDepartmentRepository;
-    }
+    @ManyToMany
+    @JoinTable(name = "user_department", joinColumns = @JoinColumn (name = "department_id"), inverseJoinColumns = @JoinColumn (name = "user_id"))
+    private Set<User> userList;
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -43,14 +37,36 @@ public class Department {
         this.name = name;
     }
 
-    public List<User> getUserList() {
-        if (userList == null) {
-            userList = userToDepartmentRepository.findUsersByDepartmentId(this.id);
-        }
+    public Set<User> getUserList() {
         return userList;
     }
 
-    public void setUserList(List<User> userList) {
+    public void setUserList(Set<User> userList) {
         this.userList = userList;
     }
+
+    // hashCode and equals
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Department)) return false;
+        Department department = (Department) o;
+        return Objects.equals(id, department.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
+    // toString
+    @Override
+    public String toString() {
+        return "Department{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", userList=" + userList +
+                '}';
+    }
+
 }

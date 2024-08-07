@@ -1,12 +1,21 @@
 package org.example.model;
 
-import org.example.repository.UserRepository;
-import org.example.repository.impl.UserRepositoryImpl;
+import jakarta.persistence.*;
 
+/**
+ * Phone entity
+ * One To One: PhoneNumber - User
+ */
+@Entity
 public class PhoneNumber {
-    private static final UserRepository userRepository = UserRepositoryImpl.getInstance();
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String number;
+
+    @OneToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
     public PhoneNumber() {
@@ -22,6 +31,10 @@ public class PhoneNumber {
         return id;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public String getNumber() {
         return number;
     }
@@ -31,16 +44,34 @@ public class PhoneNumber {
     }
 
     public User getUser() {
-        if (user != null && user.getId() > 0 && user.getFirstName() == null) {
-            this.user = userRepository.findById(user.getId()).orElse(user);
-        } else if (user != null && user.getId() == 0) {
-            this.user = null;
-        }
         return user;
     }
 
     public void setUser(User user) {
         this.user = user;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof PhoneNumber)) return false;
+        PhoneNumber that = (PhoneNumber) o;
+        return id != null && id.equals(that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return 31;
+    }
+
+    @Override
+    public String toString() {
+        return "PhoneNumber{" +
+                "id=" + id +
+                ", number='" + number + '\'' +
+                ", user=" + (user != null ? user.getId() : null) +
+                '}';
+    }
 }
+
 

@@ -1,7 +1,14 @@
 package org.example;
 
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.example.config.AppConfig;
+
+
 public class Main {
+
+
     public static void main(String[] args) {
-        System.out.println("Hello world!");
+
+            new AnnotationConfigApplicationContext(AppConfig.class);
+        }
     }
-}

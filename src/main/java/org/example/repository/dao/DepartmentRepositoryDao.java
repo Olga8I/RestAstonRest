@@ -19,7 +19,6 @@ public class DepartmentRepositoryDao {
     public DepartmentRepositoryDao(DepartmentRepository departmentRepository) {
         this.departmentRepository = departmentRepository;
     }
-
     public void add(Department department) {
         departmentRepository.save(department);
     }
@@ -35,6 +34,8 @@ public class DepartmentRepositoryDao {
     public Optional<Department> findById(Long id) {
         return Optional.ofNullable(departmentRepository.getReferenceById(id));
     }
+
+    public boolean  existsById (Long id){ return departmentRepository.existsById(id);}
 
     public List<Department> findAll() {
         return departmentRepository.findAll();

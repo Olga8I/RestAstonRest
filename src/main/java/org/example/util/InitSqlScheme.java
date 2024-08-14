@@ -1,6 +1,6 @@
 package org.example.util;
 
-import org.example.db.ConnectionManager;
+//import org.example.db.ConnectionManager;
 import org.example.exception.RepositoryException;
 
 import java.io.InputStream;
@@ -19,23 +19,23 @@ public final class InitSqlScheme {
         loadInitSQL();
    }
 
-    public static void initSqlScheme(ConnectionManager connectionManager) {
-        try (Connection connection = connectionManager.getConnection();
-             Statement statement = connection.createStatement()) {
-            statement.execute(schemeSql);
-        } catch (SQLException e) {
-            throw new RepositoryException(e);
-        }
-    }
+    //public static void initSqlScheme(ConnectionManager connectionManager) {
+      //  try (Connection connection = connectionManager.getConnection();
+        //     Statement statement = connection.createStatement()) {
+          //  statement.execute(schemeSql);
+       // } catch (SQLException e) {
+         //   throw new RepositoryException(e);
+        //}
+    //}
 
-    public static void initSqlData(ConnectionManager connectionManager) {
-        try (Connection connection = connectionManager.getConnection();
-             Statement statement = connection.createStatement()) {
-            statement.execute(dataSql);
-        } catch (SQLException e) {
-            throw new RepositoryException(e);
-        }
-    }
+    //public static void initSqlData(ConnectionManager connectionManager) {
+      //  try (Connection connection = connectionManager.getConnection();
+        //     Statement statement = connection.createStatement()) {
+          //  statement.execute(dataSql);
+       // } catch (SQLException e) {
+         //   throw new RepositoryException(e);
+        //}
+   // }
 
     private static void loadInitSQL() {
         try (InputStream inFile = InitSqlScheme.class.getClassLoader().getResourceAsStream(SCHEME)) {

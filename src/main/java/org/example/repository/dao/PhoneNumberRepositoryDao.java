@@ -29,9 +29,8 @@ public class PhoneNumberRepositoryDao {
     public void delete(Long id) {
         phoneNumberRepository.deleteById(id);
     }
-
-    public PhoneNumber findById(Long id) {
-        return phoneNumberRepository.getReferenceById(id);
+    public Optional<PhoneNumber> findById(Long id) {
+        return Optional.ofNullable(phoneNumberRepository.getReferenceById(id));
     }
 
     public List<PhoneNumber> findAll(){
@@ -41,6 +40,7 @@ public class PhoneNumberRepositoryDao {
     public boolean existsByNumber(String number) {
         return phoneNumberRepository.existsByNumber(number);
     }
+    public boolean  existsById (Long id){ return phoneNumberRepository.existsById(id);}
 
     public PhoneNumber findByNumber(String number) throws NotFoundException {
         Optional<PhoneNumber> phoneNumber = phoneNumberRepository.findByNumber(number);

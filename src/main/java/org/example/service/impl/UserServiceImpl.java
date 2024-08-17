@@ -3,7 +3,6 @@ package org.example.service.impl;
 import org.example.exception.NotFoundException;
 import org.example.mapper.UserMapper;
 import org.example.model.User;
-import org.example.repository.UserRepository;
 import org.example.repository.dao.UserRepositoryDao;
 import org.example.service.UserService;
 import org.example.dto.UserDto;
@@ -14,16 +13,17 @@ import java.util.List;
 @Service
 public class UserServiceImpl implements UserService {
 
-    private final UserRepository userRepository;
+    private final UserRepositoryDao userRepositoryDao;
     private final UserMapper userMapper;
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper) {
+    public UserServiceImpl(UserRepositoryDao userRepositoryDao,
+                           UserMapper userMapper) {
         this.userMapper = userMapper;
-        this.userRepository = userRepository;
+        this.userRepositoryDao = userRepositoryDao;
     }
 
     private void checkExistUser(Long userId) throws NotFoundException {
-        if (!userRepository.findAll().stream().anyMatch(user -> user.getId().equals(userId))) {
+        if (!userRepositoryDao.findAll().stream().anyMatch(user -> user.getId().equals(userId))) {
             throw new NotFoundException("User not found.");
         }
     }
@@ -40,26 +40,26 @@ public class UserServiceImpl implements UserService {
         }
         checkExistUser(userDto.getId());
         User user = userMapper.mapToEntity(userDto);
-        userRepository.save(user);
+        userRepositoryDao.add(user);
     }
 
     @Override
     public UserDto findById(Long userId) throws NotFoundException {
         checkExistUser(userId);
-        User user = userRepository.findById(userId);
+        User user = userRepositoryDao.findById(userId);
        return userMapper.mapToDto(user);
     }
 
     @Override
     public List<UserDto> findAll() {
-        List<User> allUsers = userRepository.findAll();
+        List<User> allUsers = userRepositoryDao.findAll();
         return userMapper.mapToListToDto(allUsers);
     }
 
     @Override
     public void delete(Long userId) throws NotFoundException {
         checkExistUser(userId);
-        userRepository.deleteById(userId);
+        userRepositoryDao.delete(userId);
     }
 }
 

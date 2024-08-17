@@ -1,6 +1,9 @@
 package org.example.model;
 
 import jakarta.persistence.*;
+
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -35,19 +38,22 @@ public class User {
     private Set<Department> departmentList;
 
     public User() {
+        departmentList = new HashSet<>();
+        phoneNumberList = new ArrayList<>();
     }
 
-    public User(Long id, String firstName, String lastName, Role role, List<PhoneNumber> phoneNumberList, Set<Department> departmentList) {
-        this.id = id;
+    public User(String firstName, String lastName, Role role, List<PhoneNumber> phoneNumberList, Set<Department> departmentList) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.role = role;
-        this.phoneNumberList = phoneNumberList;
-        this.departmentList = departmentList;
     }
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getFirstName() {

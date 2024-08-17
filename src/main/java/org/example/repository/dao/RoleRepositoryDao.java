@@ -1,12 +1,12 @@
 package org.example.repository.dao;
 
-
 import org.example.model.Role;
 import org.example.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class RoleRepositoryDao {
@@ -32,11 +32,13 @@ public class RoleRepositoryDao {
         return roleRepository.findByName(name);
     }
 
-    public Role findById(Long id){
-        return roleRepository.getReferenceById(id);
+    public Optional<Role> findById(Long id) {
+        return Optional.ofNullable(roleRepository.getReferenceById(id));
     }
 
     public List<Role> findAll(){
         return roleRepository.findAll();
     }
+
+    public boolean  existsById (Long id){ return roleRepository.existsById(id);}
 }

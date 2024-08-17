@@ -39,8 +39,8 @@ public class DepartmentController {
 
     @GetMapping
     public ResponseEntity<List<DepartmentDto>> getAllDepartments() {
-        List<DepartmentDto> departmentDtos = departmentService.findAll();
-        return ResponseEntity.ok(departmentDtos);
+        List<DepartmentDto> departmentDto = departmentService.findAll();
+        return ResponseEntity.ok(departmentDto);
     }
 
     @PutMapping("/{id}")

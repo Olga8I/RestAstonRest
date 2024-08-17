@@ -21,8 +21,7 @@ public class PhoneNumber {
     public PhoneNumber() {
     }
 
-    public PhoneNumber(Long id, String number, User user) {
-        this.id = id;
+    public PhoneNumber(String number, User user) {
         this.number = number;
         this.user = user;
     }
@@ -69,7 +68,7 @@ public class PhoneNumber {
         return "PhoneNumber{" +
                 "id=" + id +
                 ", number='" + number + '\'' +
-                ", user=" + (user != null ? user.getId() : null) +
+                ", userId=" + (user != null ? user.getId() : null) +
                 '}';
     }
 }

@@ -3,21 +3,22 @@ package org.example.dto;
 import org.example.model.Role;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 public class UserDto {
     private Long id;
     private String firstName;
     private String lastName;
-    private Role role; // Поле для роли, можно заменить на RoleUpdate или RoleOutGoing в зависимости от контекста
-    private List<PhoneNumberDto> phoneNumberList; // Должен быть класс DTO для телефонных номеров
-    private Set<DepartmentDto> departmentList; // Должен быть класс DTO для департаментов
+    private Role role;
+    private List<PhoneNumberDto> phoneNumberList;
+    private Set<DepartmentDto> departmentList;
 
-    public UserDto(Long id, String firstName, String lastName) {
+    public UserDto() {
     }
 
-    public UserDto(Long id, String firstName, String lastName, Role role, List<PhoneNumberDto> phoneNumberList, Set<DepartmentDto> departmentList) {
-        this.id = id;
+    public UserDto(String firstName, String lastName, Role role, List<PhoneNumberDto> phoneNumberList,
+                   Set<DepartmentDto> departmentList) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.role = role;
@@ -28,6 +29,8 @@ public class UserDto {
     public Long getId() {
         return id;
     }
+
+    public void setId(Long id) {this.id = id;}
 
     public String getFirstName() {
         return firstName;
@@ -47,10 +50,6 @@ public class UserDto {
 
     public Set<DepartmentDto> getDepartmentList() {
         return departmentList;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public void setFirstName(String firstName) {
@@ -73,6 +72,29 @@ public class UserDto {
         this.departmentList = departmentList;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof UserDto userDto)) return false;
+        return Objects.equals(id, userDto.id) && Objects.equals(firstName, userDto.firstName) && Objects.equals(lastName, userDto.lastName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, firstName, lastName);
+    }
+
+    @Override
+    public String toString() {
+        return "UserDto{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", role=" + role +
+                ", phoneNumberList=" + phoneNumberList +
+                ", departmentList=" + departmentList +
+                '}';
+    }
 }
 
 

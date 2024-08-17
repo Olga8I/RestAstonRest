@@ -3,7 +3,6 @@ package org.example.service.impl;
 import org.example.exception.NotFoundException;
 import org.example.mapper.DepartmentMapper;
 import org.example.model.Department;
-import org.example.repository.DepartmentRepository;
 import org.example.repository.UserRepository;
 import org.example.dto.DepartmentDto;
 import org.example.repository.dao.DepartmentRepositoryDao;

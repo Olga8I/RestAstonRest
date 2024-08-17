@@ -1,6 +1,5 @@
 package org.example.repository.dao;
 
-
 import org.example.model.Department;
 import org.example.repository.DepartmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;

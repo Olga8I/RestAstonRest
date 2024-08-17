@@ -1,7 +1,6 @@
 package org.example.repository.dao;
 
 import org.example.exception.NotFoundException;
-import org.example.model.Department;
 import org.example.model.PhoneNumber;
 import org.example.repository.PhoneNumberRepository;
 import org.springframework.beans.factory.annotation.Autowired;

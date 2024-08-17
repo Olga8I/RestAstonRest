@@ -27,7 +27,7 @@ public class PhoneNumberController {
         return new ResponseEntity<>(phoneNumberDto, HttpStatus.CREATED);
     }
 
-    @PutMapping("/{id}")
+   @PutMapping("/{id}")
     public ResponseEntity<PhoneNumberDto> update(@PathVariable Long id, @RequestBody PhoneNumberDto phoneNumberDto) {
         phoneNumberDto.setId(id);
         try {

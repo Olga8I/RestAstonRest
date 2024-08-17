@@ -27,16 +27,6 @@ public class RoleController {
         return new ResponseEntity<>(createdRole, HttpStatus.CREATED);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<RoleDto> updateRole(@PathVariable Long id, @RequestBody RoleDto roleDto) {
-        roleDto.setId(id);
-        try {
-            roleService.update(roleDto);
-            return new ResponseEntity<>(roleDto, HttpStatus.OK);
-        } catch (NotFoundException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
 
     @GetMapping("/{id}")
     public ResponseEntity<RoleDto> getRoleById(@PathVariable Long id) {

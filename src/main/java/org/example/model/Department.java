@@ -2,6 +2,7 @@ package org.example.model;
 
 import jakarta.persistence.*;
 
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -21,13 +22,18 @@ public class Department {
     @JoinTable(name = "user_department", joinColumns = @JoinColumn (name = "department_id"), inverseJoinColumns = @JoinColumn (name = "user_id"))
     private Set<User> userList;
 
+    public Department(){
+        userList = new HashSet<>();
+    }
+    public Department(String name){
+        userList = new HashSet<>();
+        this.name = name;
+    }
     public Long getId() {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    public void setId(Long id) { this.id = id; }
 
     public String getName() {
         return name;
@@ -45,7 +51,6 @@ public class Department {
         this.userList = userList;
     }
 
-    // hashCode and equals
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -59,7 +64,6 @@ public class Department {
         return Objects.hash(id);
     }
 
-    // toString
     @Override
     public String toString() {
         return "Department{" +
@@ -68,5 +72,4 @@ public class Department {
                 ", userList=" + userList +
                 '}';
     }
-
 }

@@ -1,140 +1,119 @@
 package repository;
 
-import com.github.dockerjava.api.model.ExposedPort;
-import com.github.dockerjava.api.model.HostConfig;
-import com.github.dockerjava.api.model.PortBinding;
-import com.github.dockerjava.api.model.Ports;
+import config.TestAppConfig;
 import org.example.model.Department;
 import org.example.repository.dao.DepartmentRepositoryDao;
-import org.example.util.PropertiesUtil;
 import org.junit.jupiter.api.*;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
+import java.util.List;
 
-import java.util.Optional;
+import static org.junit.jupiter.api.Assertions.*;
 
 @Testcontainers
+@ExtendWith(SpringExtension.class)
+@ContextConfiguration(classes = TestAppConfig.class)
 @Tag("DockerRequired")
 class DepartmentRepositoryDaoTest {
-    private static final String INIT_SQL = "sql/schema.sql";
-    public static DepartmentRepositoryDao departmentRepositoryDao;
-    private static int containerPort = 5432;
-    private static int localPort = 5432;
-    @Container
-    public static PostgreSQLContainer<?> container = new PostgreSQLContainer<>("postgres:latest")
-            .withDatabaseName("users_db")
-            .withUsername(PropertiesUtil.getProperties("db.username"))
-            .withPassword(PropertiesUtil.getProperties("db.password"))
-            .withExposedPorts(containerPort)
-            .withCreateContainerCmdModifier(cmd -> cmd.withHostConfig(
-                    new HostConfig().withPortBindings(new PortBinding(Ports.Binding.bindPort(localPort), new ExposedPort(containerPort)))
-            ))
-            .withInitScript(INIT_SQL);
 
+    @Container
+    private static final PostgreSQLContainer<?> container =
+            new PostgreSQLContainer<>("postgres:latest")
+                    .withDatabaseName("   ");
+
+    private DepartmentRepositoryDao departmentRepositoryDao;
 
     @BeforeAll
-   // static void beforeAll() {
-    //    container.start();
-    //    departmentRepositoryDao = new DepartmentRepositoryDao(new DepartmentRepositoryDao()); // Инициализация DAO
-     //   jdbcDatabaseDelegate = new JdbcDatabaseDelegate(container, "");
-   // }
-
-    @AfterAll
-    static void afterAll() {
-        container.stop();
+    public static void setUp() {
+        container.start();
+        System.setProperty("spring.datasource.url", container.getJdbcUrl());
+        System.setProperty("spring.datasource.username", container.getUsername());
+        System.setProperty("spring.datasource.password", container.getPassword());
     }
 
-  //  @BeforeEach
- //   void setUp() {
- ///       ScriptUtils.runInitScript(jdbcDatabaseDelegate, INIT_SQL);
-  ///  }
+    @BeforeEach
+    void init() {
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(TestAppConfig.class);
+        departmentRepositoryDao = context.getBean(DepartmentRepositoryDao.class);
+        departmentRepositoryDao.findAll().forEach(department -> departmentRepositoryDao.delete(department.getId()));
+    }
 
     @Test
-    void save() {
-        String expectedName = "new Department Yo!";
+    void testAddAndFindByIdDepartment() {
         Department department = new Department();
-        departmentRepositoryDao.add(department); // Используем метод DAO
-        Optional<Department> resultDepartment = departmentRepositoryDao.findById(department.getId()); // Используем метод DAO
+        department.setName("IT Department");
 
-        Assertions.assertTrue(resultDepartment.isPresent());
-        Assertions.assertEquals(expectedName, resultDepartment.get().getName());
+        departmentRepositoryDao.add(department);
+        Department foundDepartment = departmentRepositoryDao.findById(department.getId()).orElse(null);
+
+        assertNotNull(foundDepartment);
+        assertEquals(department.getName(), foundDepartment.getName());
     }
 
     @Test
-    void update() {
-        String expectedName = "Update department name";
+    void testUpdateDepartment() {
+        Department department = new Department();
+        department.setName("HR Department");
 
-        Optional<Department> department = departmentRepositoryDao.findById(2L); // Используем метод DAO
-        String oldName = department.get().getName();
-        int expectedSizeUserList = department.get().getUserList().size();
-        department.get().setName(expectedName);
-        departmentRepositoryDao.update(department.orElse(null)); // Используем метод DAO
+        departmentRepositoryDao.add(department);
+        department.setName("Human Resources Department");
 
-        Optional<Department> resultDepartment = departmentRepositoryDao.findById(2L); // Используем метод DAO
-        int resultSizeUserList = resultDepartment.get().getUserList().size();
+        departmentRepositoryDao.update(department);
+        Department updatedDepartment = departmentRepositoryDao.findById(department.getId()).orElse(null);
 
-        Assertions.assertNotEquals(expectedName, oldName);
-        Assertions.assertEquals(expectedName, resultDepartment.get().getName());
-        Assertions.assertEquals(expectedSizeUserList, resultSizeUserList);
+        assertNotNull(updatedDepartment);
+        assertEquals("Human Resources Department", updatedDepartment.getName());
     }
 
     @Test
-    void deleteById() {
-        Boolean expectedValue = true;
-        int expectedSize = departmentRepositoryDao.findAll().size(); // Используем метод DAO
+    void testDeleteDepartment() {
+        Department department = new Department();
+        department.setName("Finance Department");
 
-        Department tempDepartment = new Department();
-        departmentRepositoryDao.add(tempDepartment); // Используем метод DAO
+        departmentRepositoryDao.add(department);
+        Long id = department.getId();
 
-        int resultSizeBefore = departmentRepositoryDao.findAll().size(); // Используем метод DAO
-        Assertions.assertNotEquals(expectedSize, resultSizeBefore);
+        departmentRepositoryDao.delete(id);
+        Department foundDepartment = departmentRepositoryDao.findById(id).orElse(null);
 
-        departmentRepositoryDao.delete(tempDepartment.getId()); // Используем метод DAO
-        int resultSizeAfter = departmentRepositoryDao.findAll().size(); // Используем метод DAO
-
-        Assertions.assertEquals(expectedValue, expectedSize != resultSizeAfter); // Проверяем удаление
-    }
-
-    @DisplayName("Find by ID")
-    @ParameterizedTest
-    @CsvSource(value = {
-            "1, true",
-            "4, true",
-            "1000, false"
-    })
-    void findById(Long expectedId, Boolean expectedValue) {
-        Optional<Department> department = departmentRepositoryDao.findById(expectedId); // Используем метод DAO
-        if (expectedValue) {
-            Assertions.assertNotNull(department);
-            Assertions.assertEquals(expectedId, department.get().getId());
-        } else {
-            Assertions.assertNull(department); // Проверяем, что возвращается null, если нет
-        }
+        assertNull(foundDepartment);
     }
 
     @Test
-    void findAll() {
-        int expectedSize = 4;
-        int resultSize = departmentRepositoryDao.findAll().size(); // Используем метод DAO
+    void testExistsById() {
+        Department department = new Department();
+        department.setName("Marketing Department");
 
-        Assertions.assertEquals(expectedSize, resultSize);
+        departmentRepositoryDao.add(department);
+        Long id = department.getId();
+
+        assertTrue(departmentRepositoryDao.existsById(id));
+        departmentRepositoryDao.delete(id);
+        assertFalse(departmentRepositoryDao.existsById(id));
     }
 
-    @DisplayName("Exist by ID")
-    @ParameterizedTest
-    @CsvSource(value = {
-            "1; true",
-            "4; true",
-            "100; false"
-    }, delimiter = ';')
-    void exitsById(Long departmentId, Boolean expectedValue) {
-        boolean isDepartmentExist = departmentRepositoryDao.findById(departmentId) != null; // Используем метод DAO
+    @Test
+    void testFindAll() {
+        Department department1 = new Department();
+        department1.setName("Department 1");
 
-        Assertions.assertEquals(expectedValue, isDepartmentExist);
+        Department department2 = new Department();
+        department2.setName("Department 2");
+
+        departmentRepositoryDao.add(department1);
+        departmentRepositoryDao.add(department2);
+
+        List<Department> departments = departmentRepositoryDao.findAll();
+
+        assertEquals(2, departments.size());
+        assertTrue(departments.stream().anyMatch(dept -> dept.getName().equals("Department 1")));
+        assertTrue(departments.stream().anyMatch(dept -> dept.getName().equals("Department 2")));
     }
 }
 

@@ -1,6 +1,5 @@
 package org.example.dto;
 
-import org.example.model.Role;
 
 import java.util.List;
 import java.util.Objects;
@@ -10,20 +9,20 @@ public class UserDto {
     private Long id;
     private String firstName;
     private String lastName;
-    private Role role;
-    private List<PhoneNumberDto> phoneNumberList;
-    private Set<DepartmentDto> departmentList;
+    private RoleDto roleDto;
+    private List<PhoneNumberDto> phoneNumberDtoList;
+    private Set<DepartmentDto> departmentDtoList;
 
     public UserDto() {
     }
 
-    public UserDto(String firstName, String lastName, Role role, List<PhoneNumberDto> phoneNumberList,
+    public UserDto(String firstName, String lastName, RoleDto roleDto, List<PhoneNumberDto> phoneNumberList,
                    Set<DepartmentDto> departmentList) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.role = role;
-        this.phoneNumberList = phoneNumberList;
-        this.departmentList = departmentList;
+        this.roleDto =  roleDto;
+        this.phoneNumberDtoList = phoneNumberList;
+        this.departmentDtoList = departmentList;
     }
 
     public Long getId() {
@@ -40,16 +39,16 @@ public class UserDto {
         return lastName;
     }
 
-    public Role getRole() {
-        return role;
+    public RoleDto getRoleDto() {
+        return roleDto;
     }
 
     public List<PhoneNumberDto> getPhoneNumberList() {
-        return phoneNumberList;
+        return phoneNumberDtoList;
     }
 
     public Set<DepartmentDto> getDepartmentList() {
-        return departmentList;
+        return departmentDtoList;
     }
 
     public void setFirstName(String firstName) {
@@ -60,16 +59,16 @@ public class UserDto {
         this.lastName = lastName;
     }
 
-    public void setRole(Role role) {
-        this.role = role;
+    public void setRoleDto(RoleDto roleDto) {
+        this.roleDto = roleDto;
     }
 
     public void setPhoneNumberList(List<PhoneNumberDto> phoneNumberList) {
-        this.phoneNumberList = phoneNumberList;
+        this.phoneNumberDtoList = phoneNumberList;
     }
 
     public void setDepartmentList(Set<DepartmentDto> departmentList) {
-        this.departmentList = departmentList;
+        this.departmentDtoList = departmentList;
     }
 
     @Override
@@ -90,9 +89,9 @@ public class UserDto {
                 "id=" + id +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", role=" + role +
-                ", phoneNumberList=" + phoneNumberList +
-                ", departmentList=" + departmentList +
+                ", roleDto=" + roleDto +
+                ", phoneNumberList=" + phoneNumberDtoList +
+                ", departmentList=" + departmentDtoList +
                 '}';
     }
 }

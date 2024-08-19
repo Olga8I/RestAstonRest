@@ -1,8 +1,10 @@
 package mapper;
 
 import org.example.dto.PhoneNumberDto;
+import org.example.dto.UserDto;
 import org.example.mapper.PhoneNumberMapper;
 import org.example.model.PhoneNumber;
+import org.example.model.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
@@ -24,31 +26,29 @@ class PhoneNumberMapperTest {
     @Test
     void testMapToEntity() {
         PhoneNumberDto dto = new PhoneNumberDto();
-        dto.setNumber("123-456-7890");
-        // Допустим, у вас есть UserDto для тестирования
-        // dto.setUserDto(new UserDto());
+        dto.setNumberDto("123-456-7890");
+        dto.setUserDto(new UserDto());
 
         PhoneNumber phoneNumber = phoneNumberMapper.mapToEntity(dto);
 
         assertNotNull(phoneNumber);
         assertEquals(dto.getId(), phoneNumber.getId());
-        assertEquals(dto.getNumber(), phoneNumber.getNumber());
-        // Проверка User (если добавлен)
-        // assertEquals(dto.getUserDto().getId(), phoneNumber.getUser().getId());
+        assertEquals(dto.getNumberDto(), phoneNumber.getNumber());
+        assertEquals(dto.getUserDto().getId(), phoneNumber.getUser().getId());
     }
 
     @Test
     void testMapToDTO() {
         PhoneNumber phoneNumber = new PhoneNumber();
         phoneNumber.setNumber("123-456-7890");
-        // phoneNumber.setUser(new User());
+        phoneNumber.setUser(new User());
 
         PhoneNumberDto dto = phoneNumberMapper.mapToDto(phoneNumber);
 
         assertNotNull(dto);
         assertEquals(phoneNumber.getId(), dto.getId());
-        assertEquals(phoneNumber.getNumber(), dto.getNumber());
-        // assertEquals(phoneNumber.getUser().getId(), dto.getUserDto().getId());
+        assertEquals(phoneNumber.getNumber(), dto.getNumberDto());
+        assertEquals(phoneNumber.getUser().getId(), dto.getUserDto().getId());
     }
 
     @Test
@@ -70,15 +70,13 @@ class PhoneNumberMapperTest {
 
         PhoneNumberDto dto1 = dtoList.get(0);
         assertEquals(phoneNumber1.getId(), dto1.getId());
-        assertEquals(phoneNumber1.getNumber(), dto1.getNumber());
-        // Проверка User (если добавлен)
-        // assertEquals(phoneNumber1.getUser().getId(), dto1.getUserDto().getId());
+        assertEquals(phoneNumber1.getNumber(), dto1.getNumberDto());
+        assertEquals(phoneNumber1.getUser().getId(), dto1.getUserDto().getId());
 
         PhoneNumberDto dto2 = dtoList.get(1);
         assertEquals(phoneNumber2.getId(), dto2.getId());
-        assertEquals(phoneNumber2.getNumber(), dto2.getNumber());
-        // Проверка User (если добавлен)
-        // assertEquals(phoneNumber2.getUser().getId(), dto2.getUserDto().getId());
+        assertEquals(phoneNumber2.getNumber(), dto2.getNumberDto());
+        assertEquals(phoneNumber2.getUser().getId(), dto2.getUserDto().getId());
     }
 }
 

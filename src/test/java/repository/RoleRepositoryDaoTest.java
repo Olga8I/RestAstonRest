@@ -26,7 +26,7 @@ class RoleRepositoryDaoTest {
     @Container
     private static final PostgreSQLContainer<?> container =
             new PostgreSQLContainer<>("postgres:latest")
-                    .withDatabaseName("   ");
+                    .withDatabaseName("Aston_rest");
 
     private RoleRepositoryDao roleRepositoryDao;
 
@@ -47,7 +47,7 @@ class RoleRepositoryDaoTest {
 
     @Test
     void testAddAndFindByIdRole() {
-        Role role = new Role("Admin");
+        Role role = new Role("Admin",null);
 
         roleRepositoryDao.add(role);
         Optional<Role> foundRole = roleRepositoryDao.findById(role.getId());
@@ -58,7 +58,7 @@ class RoleRepositoryDaoTest {
 
     @Test
     void testUpdateRole() {
-        Role role = new Role("User");
+        Role role = new Role("User", null);
 
         roleRepositoryDao.add(role);
         role.setName("Registered User");
@@ -72,7 +72,7 @@ class RoleRepositoryDaoTest {
 
     @Test
     void testDeleteRole() {
-        Role role = new Role("Guest");
+        Role role = new Role("Guest", null);
 
         roleRepositoryDao.add(role);
         Long id = role.getId();
@@ -85,7 +85,7 @@ class RoleRepositoryDaoTest {
 
     @Test
     void testExistsById() {
-        Role role = new Role("Moderator");
+        Role role = new Role("Moderator", null);
 
         roleRepositoryDao.add(role);
         Long id = role.getId();
@@ -97,8 +97,8 @@ class RoleRepositoryDaoTest {
 
     @Test
     void testFindAll() {
-        Role role1 = new Role("Role 1");
-        Role role2 = new Role("Role 2");
+        Role role1 = new Role("Role 1",null);
+        Role role2 = new Role("Role 2", null);
 
         roleRepositoryDao.add(role1);
         roleRepositoryDao.add(role2);

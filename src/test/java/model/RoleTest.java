@@ -1,6 +1,7 @@
 package model;
 
 import org.example.model.Role;
+import org.example.model.User;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -9,7 +10,7 @@ class RoleTest {
 
     @Test
     void testRoleConstructorAndGetters() {
-        Role role = new Role("ADMIN");
+        Role role = new Role("ADMIN", null);
 
         assertNotNull(role);
         assertEquals("ADMIN", role.getName());
@@ -34,7 +35,7 @@ class RoleTest {
 
     @Test
     void testToString() {
-        Role role = new Role("GUEST");
+        Role role = new Role("GUEST", null);
         role.setId(3L);
 
         String expectedString = "Role{id=3, name='GUEST'}";
@@ -43,11 +44,11 @@ class RoleTest {
 
     @Test
     void testEquals() {
-        Role role1 = new Role("ADMIN");
+        Role role1 = new Role("ADMIN", null);
         role1.setId(1L);
-        Role role2 = new Role("ADMIN");
+        Role role2 = new Role("ADMIN", null);
         role2.setId(1L);
-        Role role3 = new Role("USER");
+        Role role3 = new Role("USER", null);
         role3.setId(2L);
 
         assertEquals(role1, role2);
@@ -59,9 +60,9 @@ class RoleTest {
 
     @Test
     void testHashCode() {
-        Role role1 = new Role("ADMIN");
+        Role role1 = new Role("ADMIN", null);
         role1.setId(1L);
-        Role role2 = new Role("ADMIN");
+        Role role2 = new Role("ADMIN", null);
         role2.setId(1L);
 
         assertEquals(role1.hashCode(), role2.hashCode());

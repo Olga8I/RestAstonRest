@@ -1,9 +1,9 @@
 package org.example.config;
 
 import liquibase.integration.spring.SpringLiquibase;
+import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.*;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
@@ -16,7 +16,7 @@ import java.util.Properties;
 @PropertySource("classpath:db.properties")
 public class AppConfig {
 
-    @Value("${db.driverClassName}")
+    @Value("${db.driver-class-name}")
     private String driverClassName;
 
     @Value("${db.url}")
@@ -30,7 +30,7 @@ public class AppConfig {
 
     @Bean
     public DataSource dataSource() {
-        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+        BasicDataSource dataSource = new BasicDataSource();
         dataSource.setDriverClassName(driverClassName);
         dataSource.setUrl(url);
         dataSource.setUsername(username);
@@ -42,7 +42,7 @@ public class AppConfig {
     public LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource) {
         LocalContainerEntityManagerFactoryBean emf = new LocalContainerEntityManagerFactoryBean();
         emf.setDataSource(dataSource);
-        emf.setPackagesToScan("org.example.entity");
+        emf.setPackagesToScan("org.example.model");
         emf.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
 
         Properties properties = new Properties();
@@ -61,23 +61,6 @@ public class AppConfig {
       liquibase.setDataSource(dataSource);
       liquibase.setChangeLog("classpath:db/db.xml");
       return liquibase;
-    }
-
-    @Bean
-    public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
-        LocalContainerEntityManagerFactoryBean emf = new LocalContainerEntityManagerFactoryBean();
-        emf.setDataSource(dataSource());
-        emf.setPackagesToScan("org.example.entity");
-        emf.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
-
-        Properties properties = new Properties();
-        properties.setProperty("hibernate.show_sql", "true");
-        properties.setProperty("hibernate.format_sql", "true");
-        properties.setProperty("hibernate.hbm2ddl.auto", "none");
-        properties.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
-        emf.setJpaProperties(properties);
-
-        return emf;
     }
 
 

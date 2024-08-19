@@ -1,7 +1,7 @@
 package org.example.service.impl;
 
-import org.example.exception.NotFoundException;
 import org.example.dto.RoleDto;
+import org.example.exception.NotFoundException;
 import org.example.mapper.RoleMapper;
 import org.example.model.Role;
 import org.example.repository.dao.RoleRepositoryDao;
@@ -29,14 +29,14 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public void update(RoleDto roleDto) throws NotFoundException {
+    public void update(org.example.dto.RoleDto roleDto) throws NotFoundException {
         checkRoleExist(roleDto.getId());
         Role role = roleMapper.mapToEntity(roleDto);
         roleRepositoryDao.add(role);
     }
 
     @Override
-    public RoleDto findById(Long roleId) throws NotFoundException {
+    public org.example.dto.RoleDto findById(Long roleId) throws NotFoundException {
         Role role = roleRepositoryDao.findById(roleId)
                 .orElseThrow(() ->
                 new NotFoundException("Role not found."));
@@ -44,7 +44,7 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public List<RoleDto> findAll() {
+    public List<org.example.dto.RoleDto> findAll() {
         List<Role> roleList = roleRepositoryDao.findAll();
         return roleMapper.mapToListToDto(roleList);
     }

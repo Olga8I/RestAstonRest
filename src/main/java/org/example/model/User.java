@@ -43,6 +43,8 @@ public class User {
     }
 
     public User(String firstName, String lastName, Role role, List<PhoneNumber> phoneNumberList, Set<Department> departmentList) {
+        this.phoneNumberList = phoneNumberList;
+        this.departmentList = departmentList;
         this.firstName = firstName;
         this.lastName = lastName;
         this.role = role;

@@ -6,21 +6,21 @@ import java.util.Objects;
 public class DepartmentDto {
     private Long id;
     private String name;
-    private List<UserDto> userList;
+    private List<UserDto> userListDto;
 
     public DepartmentDto() {}
 
-    public DepartmentDto(String name, List<UserDto> userList) {
+    public DepartmentDto(String name, List<UserDto> userListDto) {
         this.name = name;
-        this.userList = userList;
+        this.userListDto = userListDto;
     }
 
     public Long getId() { return id; }
     public void setId(Long id) {this.id = id;}
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
-    public List<UserDto> getUserList() { return userList; }
-    public void setUserList(List<UserDto> userList) { this.userList = userList; }
+    public List<UserDto> getUserList() { return userListDto; }
+    public void setUserList(List<UserDto> userList) { this.userListDto = userListDto; }
 
     @Override
     public boolean equals(Object o) {
@@ -39,7 +39,7 @@ public class DepartmentDto {
         return "DepartmentDto{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", userList=" + userList +
+                ", userList=" + userListDto +
                 '}';
     }
 }

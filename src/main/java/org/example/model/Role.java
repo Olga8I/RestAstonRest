@@ -2,6 +2,8 @@ package org.example.model;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 /**
  * Role entity
  * Many to One: User -> Role
@@ -14,14 +16,25 @@ public class Role {
     private Long id;
 
     private String name;
-    @OneToMany
-    @JoinColumn(name = "user_id")
-    private User user;
+
+    // Изменено: аннотация @OneToMany заменена на @OneToMany
+    @OneToMany(mappedBy = "role")
+    private List<User> users;
+
     public Role() {
     }
 
-    public Role(String name) {
+    public Role(String name, List<User> users) {
+        this.users = users;
         this.name = name;
+    }
+
+    public List<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
     }
 
     public Long getId() {
@@ -45,6 +58,7 @@ public class Role {
         return "Role{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
+                ", users=" + users +
                 '}';
     }
 
@@ -61,6 +75,5 @@ public class Role {
         return getClass().hashCode();
     }
 }
-
 
 

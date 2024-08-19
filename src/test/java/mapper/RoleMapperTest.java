@@ -1,6 +1,5 @@
 package mapper;
 
-import org.example.dto.RoleDto;
 import org.example.mapper.RoleMapper;
 import org.example.model.Role;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,7 +22,7 @@ class RoleMapperTest {
 
     @Test
     void testMapToEntity() {
-        RoleDto dto = new RoleDto();
+        org.example.dto.RoleDto dto = new org.example.dto.RoleDto();
         dto.setName("Admin");
 
         Role role = roleMapper.mapToEntity(dto);
@@ -38,7 +37,7 @@ class RoleMapperTest {
         Role role = new Role();
         role.setName("Admin");
 
-        RoleDto dto = roleMapper.mapToDto(role);
+        org.example.dto.RoleDto dto = roleMapper.mapToDto(role);
 
         assertNotNull(dto);
         assertEquals(role.getId(), dto.getId());
@@ -55,16 +54,16 @@ class RoleMapperTest {
 
         List<Role> roles = Arrays.asList(role1, role2);
 
-        List<RoleDto> dtoList = roleMapper.mapToListToDto(roles);
+        List<org.example.dto.RoleDto> dtoList = roleMapper.mapToListToDto(roles);
 
         assertNotNull(dtoList);
         assertEquals(2, dtoList.size());
 
-        RoleDto dto1 = dtoList.get(0);
+        org.example.dto.RoleDto dto1 = dtoList.get(0);
         assertEquals(role1.getId(), dto1.getId());
         assertEquals(role1.getName(), dto1.getName());
 
-        RoleDto dto2 = dtoList.get(1);
+        org.example.dto.RoleDto dto2 = dtoList.get(1);
         assertEquals(role2.getId(), dto2.getId());
         assertEquals(role2.getName(), dto2.getName());
     }

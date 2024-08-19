@@ -26,7 +26,7 @@ class PhoneNumberRepositoryDaoTest {
     @Container
     private static final PostgreSQLContainer<?> container =
             new PostgreSQLContainer<>("postgres:latest")
-                    .withDatabaseName("  ");
+                    .withDatabaseName("Aston_rest");
 
     private PhoneNumberRepositoryDao phoneNumberRepositoryDao;
 

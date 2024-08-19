@@ -33,7 +33,7 @@ class UserMapperTest {
         UserDto dto = new UserDto();
         dto.setFirstName("John");
         dto.setLastName("Doe");
-        // dto.setRole(new RoleDto("devoloper"));
+        dto.setRoleDto(new RoleDto("devoloper"));
         dto.setPhoneNumberList(Arrays.asList(new PhoneNumberDto("1234567890", null)));
         Set<DepartmentDto> departmentDtos = new HashSet<>();
         departmentDtos.add(new DepartmentDto("HR", null));
@@ -45,12 +45,12 @@ class UserMapperTest {
         assertEquals(dto.getFirstName(), user.getFirstName());
         assertEquals(dto.getLastName(), user.getLastName());
         assertNotNull(user.getRole());
-        assertEquals(dto.getRole().getId(), user.getRole().getId());
-        assertEquals(dto.getRole().getName(), user.getRole().getName());
+        assertEquals(dto.getRoleDto().getId(), user.getRole().getId());
+        assertEquals(dto.getRoleDto().getName(), user.getRole().getName());
 
         assertNotNull(user.getPhoneNumberList());
         assertEquals(dto.getPhoneNumberList().size(), user.getPhoneNumberList().size());
-        assertEquals(dto.getPhoneNumberList().get(0).getNumber(), user.getPhoneNumberList().get(0).getNumber());
+        assertEquals(dto.getPhoneNumberList().get(0).getNumberDto(), user.getPhoneNumberList().get(0).getNumber());
 
         assertNotNull(user.getDepartmentList());
         assertEquals(dto.getDepartmentList().size(), user.getDepartmentList().size());
@@ -63,8 +63,8 @@ class UserMapperTest {
         User user = new User();
         user.setFirstName("John");
         user.setLastName("Doe");
-        user.setRole(new Role("ADMIN")); // Инициализация объекта Role
-       // user.setPhoneNumberList(Arrays.asList(new PhoneNumber("1234567890"," asdasf")));
+        user.setRole(new Role("ADMIN", null)); // Инициализация объекта Role
+        user.setPhoneNumberList(Arrays.asList(new PhoneNumber("1234567890",user)));
         user.setDepartmentList(new HashSet<>(Arrays.asList(new Department( "HR")))); // Инициализация Department
 
         UserDto dto = userMapper.mapToDto(user);
@@ -72,13 +72,13 @@ class UserMapperTest {
         assertNotNull(dto);
         assertEquals(user.getFirstName(), dto.getFirstName());
         assertEquals(user.getLastName(), dto.getLastName());
-        assertNotNull(dto.getRole());
-        assertEquals(user.getRole().getId(), dto.getRole().getId());
-        assertEquals(user.getRole().getName(), dto.getRole().getName());
+        assertNotNull(dto.getRoleDto());
+        assertEquals(user.getRole().getId(), dto.getRoleDto().getId());
+        assertEquals(user.getRole().getName(), dto.getRoleDto().getName());
 
         assertNotNull(dto.getPhoneNumberList());
         assertEquals(user.getPhoneNumberList().size(), dto.getPhoneNumberList().size());
-        assertEquals(user.getPhoneNumberList().get(0).getNumber(), dto.getPhoneNumberList().get(0).getNumber());
+        assertEquals(user.getPhoneNumberList().get(0).getNumber(), dto.getPhoneNumberList().get(0).getNumberDto());
 
         assertNotNull(dto.getDepartmentList());
         assertEquals(user.getDepartmentList().size(), dto.getDepartmentList().size());

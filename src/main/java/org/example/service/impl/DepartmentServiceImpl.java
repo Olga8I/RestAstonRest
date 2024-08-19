@@ -3,7 +3,6 @@ package org.example.service.impl;
 import org.example.exception.NotFoundException;
 import org.example.mapper.DepartmentMapper;
 import org.example.model.Department;
-import org.example.repository.UserRepository;
 import org.example.dto.DepartmentDto;
 import org.example.repository.dao.DepartmentRepositoryDao;
 import org.example.service.DepartmentService;
@@ -16,15 +15,12 @@ import java.util.List;
 public class DepartmentServiceImpl implements DepartmentService {
 
     private final DepartmentRepositoryDao departmentRepositoryDao;
-    private final UserRepository userRepository;
     private final DepartmentMapper departmentMapper;
 
     @Autowired
     public DepartmentServiceImpl(DepartmentRepositoryDao departmentRepositoryDao,
-                                 UserRepository userRepository,
                                  DepartmentMapper departmentMapper) {
         this.departmentRepositoryDao = departmentRepositoryDao;
-        this.userRepository = userRepository;
         this.departmentMapper = departmentMapper;
     }
 
